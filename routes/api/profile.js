@@ -1,9 +1,68 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../../middleware/auth');
+const { check, validationResult } = require('express-validator');
 
-// @route GET api/proile
-// desc Test route
-// @access Public
-router.get('/', (req, res) => res.send('proile'));
+
+const Profile = require('../../models/Profile');
+const User = require('../../models/User');
+
+// @route GET api/profile/me
+// desc Get currewnt users profile
+// @access Private
+router.get('/me', auth, async (req, res) => {
+
+  try {
+    // dzieki populate wezmie z user name i avatar
+    const profile = await Profile.findOne({ user: req.user.id }).populate('user', ['name', 'avatar'])
+
+    if(!profile) {
+      return res.status(400).json({ msg: 'There is no profile fot this user'})
+    };
+
+    res.json({profile})
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  };
+
+});
+
+// @route POST api/profile/
+// desc Create or update user profile
+// @access Private
+
+router.post('/', 
+  [ 
+    auth, 
+    [
+      check('status', 'Status is required').not().isEmpty(),
+      check('skills', 'Skills is required').not().isEmpty(),
+    ]
+  ], 
+  async (req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+      console.log(errors)
+      return res.status(400).send({ errors: errors.array() });
+    };
+
+    const {
+      company,
+      website,
+      location, 
+      bio,
+      status,
+      githubusername,
+      skills,
+      youtube,
+      facebook,
+      twitter,
+      instagram,
+      linkedin
+    } = req.body;
+
+    // Build profile object
+});
 
 module.exports = router;
