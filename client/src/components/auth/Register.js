@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { setAlert } from '../../actions/alert';
 
-const Register = () => {
+const Register = props => {
   const [ formData, setFormData ] = useState({
     name: "",
     email: "",
@@ -15,7 +18,7 @@ const Register = () => {
   const onSubmit = e => {
     e.preventDefault();
     if(password !== password2) {
-      console.log('Paswords do nto match')
+      props.setAlert('Password not matches', 'danger');
     }
   };
 
@@ -35,8 +38,12 @@ const Register = () => {
             />
         </div>
         <div className="form-group">
-          <input type="email" placeholder="Email Address" name="email" value={email} onChange={e => onChange(e)}
- />
+          <input 
+          type="email" 
+          placeholder="Email Address" 
+          name="email" value={email} 
+          onChange={e => onChange(e)}
+          />
           <small className="form-text">
             This site uses Gravatar so if you want a profile image, use a
             Gravatar email
@@ -60,16 +67,15 @@ const Register = () => {
             value={password2}
             minLength="6"
             onChange={e => onChange(e)}
-
           />
         </div>
         <input type="submit" className="btn btn-primary" value="Register" />
       </form>
       <p className="my-1">
-        Already have an account? <a href="login.html">Sign In</a>
+        Already have an account? <Link to="login.html">Sign In</Link>
       </p>
     </>
   )
 };
 
-export default Register;
+export default connect(null, { setAlert })(Register);
