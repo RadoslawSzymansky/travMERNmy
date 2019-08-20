@@ -8,7 +8,7 @@ const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator');
 
 // @route GET api/auth
-// desc Test route
+// desc Get user
 // @access Public
 router.get('/', auth, async (req, res) => {
   try {
