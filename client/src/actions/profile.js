@@ -4,22 +4,21 @@ import { setAlert} from './alert';
 import { 
   GET_PROFILE,
   PROFILE_ERROR,
-  UPDATE_PROFILE
+  UPDATE_PROFILE,
+  ACCOUNT_DELETED,
+  CLEAR_PROFILE
 } from './types';
 
 // Get current users profile
 
 export const getCurrentProfile = () => async dispatch => {
-  console.log("akcja")
   try {
     const res = await axios.get('/api/profile/me');
-    console.log("mam res", res)
     dispatch({
       type: GET_PROFILE,
       payload: res.data
     })
   } catch (error) {
-    console.log("problem", error)
     dispatch({
       type: PROFILE_ERROR,
       payload: { 
@@ -137,5 +136,68 @@ export const addEducation = (formData, history) => async dispatch => {
       }
     });
 
+  };
+};
+
+// Delete experience 
+export const deleteExperience = id => async dispatch => {
+  try {
+    const res = await axios.delete(`/api/profile/experience/${id}`);
+    dispatch({
+      type: UPDATE_PROFILE,
+      payload: res.data
+    });
+
+    dispatch(setAlert('Experience removed', 'success'));
+  } catch (error) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status
+      }
+    });
+  };
+};
+
+// Delete education
+export const deleteEducation = id => async dispatch => {
+  try {
+    const res = await axios.delete(`/api/profile/education/${id}`);
+    dispatch({
+      type: UPDATE_PROFILE,
+      payload: res.data
+    });
+
+    dispatch(setAlert('Education removed', 'success'));
+  } catch (error) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status
+      }
+    });
+  };
+};
+
+// Delete account
+export const deleteAccount = () => async dispatch => {
+  if(window.confirm('Are you sure? This can NOT be undone!')){
+    try {
+      const res = await axios.delete('/api/profile');
+      dispatch({ type: CLEAR_PROFILE });
+      dispatch({ type: ACCOUNT_DELETED });
+
+      dispatch(setAlert('Your account has been deleted'));
+    } catch (error) {
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: {
+          msg: error.response.statusText,
+          status: error.response.status
+        }
+      });
+    };
   };
 };
