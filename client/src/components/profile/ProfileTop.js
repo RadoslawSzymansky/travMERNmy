@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { spawn } from 'child_process';
 
 const ProfileTop = ({profile: {
   status,
@@ -35,20 +34,35 @@ const ProfileTop = ({profile: {
             </a>
           )
         }
-        
-       
-        <a href="#" target="_blank" rel="noopener noreferrer">
-          <i className="fab fa-facebook fa-2x"></i>
-        </a>
-        <a href="#" target="_blank" rel="noopener noreferrer">
-          <i className="fab fa-linkedin fa-2x"></i>
-        </a>
-        <a href="#" target="_blank" rel="noopener noreferrer">
-          <i className="fab fa-youtube fa-2x"></i>
-        </a>
-        <a href="#" target="_blank" rel="noopener noreferrer">
-          <i className="fab fa-instagram fa-2x"></i>
-        </a>
+        {
+          social && social.facebook && (
+            <a href={social.facebook} target="_blank" rel="noopener noreferrer">
+              <i className="fab fa-facebook fa-2x"></i>
+            </a>
+          )
+        }
+        {
+          social && social.instagram && (
+            <a href={social.instagram} target="_blank" rel="noopener noreferrer">
+              <i className="fab fa-instagram fa-2x"></i>
+            </a>
+          )
+        }
+        {
+          social && social.linkedin && (
+            <a href={social.linkedin} target="_blank" rel="noopener noreferrer">
+              <i className="fab fa-linkedin fa-2x"></i>
+            </a>
+          )
+        }
+        {
+          social && social.youtube && (
+            <a href={social.youtube} target="_blank" rel="noopener noreferrer">
+              <i className="fab fa-youtube fa-2x"></i>
+            </a>
+          )
+        }
+    
       </div>
     </div>
   )
