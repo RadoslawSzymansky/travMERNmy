@@ -16,7 +16,7 @@ const Dashboard = ({
   }) => {
   useEffect(() => {
     getCurrentProfile();
-  }, []);
+  }, [getCurrentProfile]);
 
   return loading && profile === null ? <Spinner /> : <>
     <h1 className="large text-primary">Dashboard</h1>
