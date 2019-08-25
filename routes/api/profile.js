@@ -340,6 +340,7 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
 // @access   Public
 
 router.get('/github/:username', (req, res) => {
+  console.log("githubrepo")
   try {
     
     const options = {
